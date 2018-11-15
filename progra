@@ -1,0 +1,131 @@
+import random
+def printboard(b):
+    height = len(b)
+    width= len(b[0])
+    toPrint=""
+    for r in range(height):
+        for c in range(width):
+            toPrint= toPrint+b[r][c]+" "
+        toPrint= toPrint+"\n"
+    print(toPrint)
+
+def createBoard(width, height):
+    board= list()
+    for i in range(height):
+        row=list()
+        for c in range(width):
+            row.append("o")
+        board.append(row)
+        if i==0 or  i==9:
+            for x in range(height):
+                row[x]="|"
+        if i==1 or 2 or 3 or 4 or 5 or 6 or 7 or 8:
+            row[0]="|"
+            row[9]="|"
+    return board
+
+def addWalls(b, numWall): #board, numWalls
+    height= len(b)
+    width= len(b[0])
+    for i in range(numWall):
+        wR= random.randint(1, height-2)#Y for the new wall
+        wC= random.randint(1,width-2) #Xfor the new wall
+        b[wR][wC]="|"
+    return b
+
+def addPacman(b):
+    height= len(b)
+    width= len(b[0])
+    pR= random.randint(1, height-2)
+    pC= random.randint(1, width-2)
+    b[pR][pC]="©"
+    print("Coordenates are: ", pR,",", pC)
+    return b
+
+def addPhantoms(b, numPhantom):
+    height= len(b)
+    width= len(b[0])
+    for i in range(numPhantom):
+        pR= random.randint(2,height-2)
+        pC= random.randint(2,width-2)
+        if b[pC][pR]== "o":
+            b[pC][pR]="~"
+        if b[pC][pR]=="":
+            b[pC][pR]= "∩"
+        if b[pC][pR]=="|":
+            b[pC][pR]="~"
+    return b
+
+def findPacman (b):
+    height = len(b)
+    width= len(b[0])
+    PacmanLocation= list()
+    for r in range(height):
+        for c in range(width):
+            if b[r][c]=="©":
+                PacmanLocation.append(c)
+                PacmanLocation.append(r)
+    return PacmanLocation
+
+def findGhost(b, wich):
+    height = len(b)
+    width= len(b[0])
+    ghostsIvefound=wich+1
+    PhantomLocation=list()
+    for r in range(height):
+        for c in range(width):
+            if b[r][c]=="∩" or b[r][c]=="~":
+                PhantomLocation.append(c)
+                PhantomLocation.append(r)
+                ghostsIvefound+=1
+                if ghostsIvefound == wich:
+                    return PhantomLocation
+    return PhantomLocation
+
+#def playHuman(b)
+
+#def addPhantomAndDot(b, numPhantomAndDot):
+#    height= len(b)
+#    width= len(b[0])
+ #   for i in range(numPhantomAndDot):
+  #      pdR= random.randint(1,height-2)
+   #     pdC=random.randint(1,width-2)
+    #    b[pdR][pdC]= "~"
+    #return b
+
+#def addDot(b, numDot):
+#    height= len(b)
+#    width= len(b[0])
+#    for i in range(numDot):
+#        dR= random.randint(0,height-1)
+#        dC= random.randint(0,width-1)
+#        b[dR][dC]="o"
+#    return b
+
+#def addEmpty(b, numEmpty):
+#    height= len(b)
+#    width= len(b[0])
+#    for i in range(numEmpty):
+#        eR= random.randint(0,height-1)
+#        eC= random.randint(0,width-1)
+#        b[eR][eC]="-"
+#    return b
+
+Board=createBoard(10,10)
+numWalls= random.randint(20,50)
+addWalls(Board, numWalls)
+addPhantoms(Board, 2)
+addPacman(Board)
+printboard(Board)
+location= findPacman(Board)
+print("Location= ", location)
+G1location=findGhost(Board, 1)
+print("Ghost 1 location= ", G1location)
+G2location=findGhost(Board, 0)
+print("Ghost 2 location= ", G2location)
+
+
+
+#keepPlaying=True
+#while keepPlaying:
+#    board=
